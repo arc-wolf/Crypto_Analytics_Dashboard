@@ -1,20 +1,42 @@
-## 🌍 Open Source Contribution
+# Cryptocurrency Analytics Dashboard
 
-This project is built entirely using **open-source tools**:
+A small data collection and visualization stack using CoinGecko, InfluxDB, Grafana, Python and Docker Compose. The dashboard tracks BTC, ETH and DOGE prices.
 
-- [CoinGecko API](https://www.coingecko.com/en/api) for real-time crypto data
-- [InfluxDB 2.7](https://github.com/influxdata/influxdb) for time-series storage
-- [Grafana](https://github.com/grafana/grafana) for stunning dashboards
-- [Docker](https://github.com/docker) for simplified deployment
-- [Python](https://github.com/python/cpython) as the core engine
+## Stack
 
-🧑‍💻 Contributions are welcome — feel free to fork, improve, and submit PRs!
+- Python for fetching market data
+- CoinGecko API as a market-data source
+- InfluxDB 2.7 for time-series storage
+- Grafana for visualization
+- Docker Compose for local deployment
 
----
+## Run locally
 
-## 🖼️ Sample Dashboard Screenshot
+1. Install Docker Engine and the Docker Compose plugin.
+2. Copy the environment template:
 
-Below is a snapshot of the live dashboard tracking BTC, ETH, and DOGE prices:
+```bash
+cp .env.example .env
+```
 
-![Screenshot at 2025-07-06 00-11-51](https://github.com/user-attachments/assets/e81416c9-9ad5-409f-8060-8e57e99dd4b0)
+3. Replace every placeholder in `.env` with unique credentials and a long random InfluxDB admin token. Never commit the real `.env` file.
+4. Start the services:
 
+```bash
+docker compose up -d
+docker compose ps
+docker compose logs -f
+```
+
+5. Open Grafana at `http://localhost:3000` and InfluxDB at `http://localhost:8086`. Use the credentials configured in `.env`.
+
+## Security notes
+
+- The Compose file intentionally refuses to start if required passwords or tokens are missing.
+- Keep `.env` private and restrict access to it.
+- Do not expose the database or Grafana ports directly to an untrusted network. Use a firewall and HTTPS reverse proxy for remote access.
+- The InfluxDB initialization variables are used when the data directory is initialized for the first time. Changing values in `.env` later does not automatically rotate credentials in an already initialized database.
+
+## Dashboard preview
+
+![Sample dashboard showing BTC, ETH and DOGE prices](https://github.com/user-attachments/assets/e81416c9-9ad5-409f-8060-8e57e99dd4b0)
